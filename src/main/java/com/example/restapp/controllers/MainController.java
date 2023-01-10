@@ -3,6 +3,7 @@ package com.example.restapp.controllers;
 import com.example.restapp.domain.User;
 import com.example.restapp.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,9 @@ import java.util.HashMap;
 @Controller
 @RequestMapping("/")
 public class MainController {
+
+    @Value("${spring.profiles.active}")
+    private String profile;
 
     private final MessageService messageService;
 
@@ -28,6 +32,7 @@ public class MainController {
         data.put("profile", user);
         data.put("messages", messageService.findAll());
         model.addAttribute("frontendData", data);
+        model.addAttribute("isDevMode", "dev".equals(profile));
 
         return "index";
     }
